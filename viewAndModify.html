@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="viewAndModifycss.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .frontTop {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+        }
+        .vitlogo {
+            height: 60px;
+            width: 70px;
+        }
+        .FallSem, .campus {
+            margin: 0;
+        }
+        #regInfo {
+            padding: 20px;
+            background-color: #e0e0e0;
+        }
+        #vm {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #table1Container, #table2Container {
+            width: 80%;
+            margin: 0 auto 20px auto;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        #goBackContainer {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #goBack {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #goBack:hover {
+            background-color: #005599;
+        }
+        .modify-btn, .delete-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .modify-btn {
+            background-color: #28a745;
+        }
+        .modify-btn:hover {
+            background-color: #218838;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="frontTop">
+        <img src="vitlogo.jpg" alt="vitlogo" class="vitlogo">
+        <span class="FallSem"><p>Fall Semester Course Registration</p></span>
+        <br>
+        <span class="campus"><p>VIT - Vellore Campus</p></span>
+    </div>
+    <div id="regInfo">
+        <p>Registration Number : <span id="reg"></span> - (Study System : CBCS - Course System: CBSC)</p>
+    </div>
+
+    <div id="vm">
+        <h2>View And Modify Page</h2>
+    </div>
+
+    <div id="table1Container">
+        <table id="table1">
+            <thead id="thead1">
+                <tr>
+                    <th>Course Details</th>
+                    <th>Slot</th>
+                    <th>Credits</th>
+                    <th>Faculty Name</th>
+                    <th>Status</th>
+                    <th>Modify</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="tbody1">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h3 id="regCr">Registered credit(s)</h3>
+    </div>
+
+    <div id="table2Container">
+        <table id="table2">
+            <thead id="thead2">
+                <tr id="tr2">
+                    <th>CGPA : 8.27</th>
+                    <th>Credits</th>
+                    <th>Course</th>
+                </tr>
+            </thead>
+            <tbody id="thbody2">
+                <tr>
+                    <td>Minimum</td>
+                    <td>16</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Maximum</td>
+                    <td>27</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Registered(Including Non-Credit Category)</td>
+                    <td id="creditsRegistered"></td>
+                    <td id="coursesRegistered"></td>
+                </tr>
+                <tr>
+                    <td>Non-Credit Category</td>
+                    <td>0.0</td>
+                    <td>0</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div id="goBackContainer">
+        <button id="goBack" onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        const regNum = document.getElementById('reg');
+        const regNumber = localStorage.getItem('regNum');
+        regNum.innerHTML = regNumber;
+
+        let Credits = 0;
+        let course = 0;
+
+        let tbody1 = document.querySelector('#table1 #tbody1');
+
+        function addCourseRow(courseDetails, slot, credits, faculty, status, modifyHandler, deleteHandler) {
+            let tr = document.createElement('tr');
+            let tdCourse = document.createElement('td');
+            let tdSlot = document.createElement('td');
+            let tdCredits = document.createElement('td');
+            let tdFaculty = document.createElement('td');
+            let tdStatus = document.createElement('td');
+            let tdModify = document.createElement('td');
+            let tdDelete = document.createElement('td');
+
+            let buttonModify = document.createElement('button');
+            buttonModify.textContent = 'Modify';
+            buttonModify.className = 'modify-btn';
+            buttonModify.addEventListener('click', modifyHandler);
+
+            let buttonDelete = document.createElement('button');
+            buttonDelete.textContent = 'Delete';
+            buttonDelete.className = 'delete-btn';
+            buttonDelete.addEventListener('click', deleteHandler);
+
+            tdCourse.innerHTML = courseDetails;
+            tdSlot.innerHTML = slot;
+            tdCredits.innerHTML = credits;
+            tdFaculty.innerHTML = faculty;
+            tdStatus.innerHTML = status;
+            tdStatus.style.color = "green";
+            tdStatus.style.fontWeight = "bolder";
+
+            tdModify.appendChild(buttonModify);
+            tdDelete.appendChild(buttonDelete);
+
+            tr.appendChild(tdCourse);
+            tr.appendChild(tdSlot);
+            tr.appendChild(tdCredits);
+            tr.appendChild(tdFaculty);
+            tr.appendChild(tdStatus);
+            tr.appendChild(tdModify);
+            tr.appendChild(tdDelete);
+
+            tbody1.appendChild(tr);
+
+            Credits += credits;
+            course += 1;
+        }
+
+        if (localStorage.javaFaculty) {
+            addCourseRow(
+                "ICSE103E - Computer Programming : Java", 
+                "TAA2", 
+                3, 
+                localStorage.getItem('javaFaculty'), 
+                "Registered", 
+                () => { window.location.href = "page6.html"; },
+                () => { localStorage.removeItem('javaFaculty'); window.location.reload(); }
+            );
+        }
+
+        if (localStorage.englishFaculty) {
+            addCourseRow(
+                "IENG102P - Technical Report Writing", 
+                "LAB", 
+                2, 
+                localStorage.getItem('englishFaculty'), 
+                "Registered", 
+                () => { window.location.href = "english.html"; },
+                () => { localStorage.removeItem('englishFaculty'); window.location.reload(); }
+            );
+        }
+
+        if (localStorage.MathFaculty) {
+            addCourseRow(
+                "IMAT201L - Complex Variable And Linear Algebra", 
+                "C1", 
+                4, 
+                localStorage.getItem('MathFaculty'), 
+                "Registered", 
+                () => { window.location.href = "maths.html"; },
+                () => { localStorage.removeItem('MathFaculty'); window.location.reload(); }
+            );
+        }
+
+        if (localStorage.dsaFaculty) {
+            addCourseRow(
+                "ISWE102P - Data Structures And Algorithms", 
+                "A2", 
+                4, 
+                localStorage.getItem('dsaFaculty'), 
+                "Registered", 
+                () => { window.location.href = "dsa.html"; },
+                () => { localStorage.removeItem('dsaFaculty'); window.location.reload(); }
+            );
+        }
+
+        if (localStorage.webFaculty) {
+            addCourseRow(
+                "ISWE206L - Web Technologies", 
+                "B2", 
+                4, 
+                localStorage.getItem('webFaculty'), 
+                "Registered", 
+                () => { window.location.href = "web.html"; },
+                () => { localStorage.removeItem('webFaculty'); window.location.reload(); }
+            );
+        }
+
+        const crR = document.querySelector('#creditsRegistered');
+        const coR = document.querySelector('#coursesRegistered');
+        crR.innerHTML = Credits;
+        coR.innerHTML = course;
+
+        function goBack(){
+            window.location.href = "page4.html";
+        }
+    </script>
+</body>
+</html>

@@ -140,11 +140,11 @@
                         <td><input type="radio" name="seats" value="Sujatha Aravindhan Menon" session="TAA2" required> <label id="seatCountSujathaAravindhanMenon">70</label></td>
                     </tr>
                     <tr>
-                        <td>L45+L46</td>
-                        <td>SJT421</td>
+                        <td>L39+L49</td>
+                        <td>SJT332</td>
                         <td>LAB</td>
                         <td id="FacultyName" class="FacultyName1">MD. Shahul Hammeed M A</td>
-                        <td><input type="radio" name="seats" value="MD. Shahul Hammeed M A" session="TAA1" required> <label id="seatCountMDShahulHammeedMA">70</label></td>
+                        <td><input type="radio" name="seats" value="MD. Shahul Hammeed M A" session="TAA2" required> <label id="seatCountMD.ShahulHammeedMA">70</label></td>
                     </tr>
                     <tr id="OptionRegular">
                         <td colspan="2">Course Option</td>
@@ -162,7 +162,7 @@
     </form>
 
     <!-- Modal -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal">        
         <div class="modal-content">
             <img id="img1" src="regTick1.jpg" alt="" width="150">
             <p id="modalMessage">Hello</p>
@@ -172,50 +172,51 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Load initial seat counts from local storage or set default values
-            const faculties = ["Prasanth Kumar N S", "Sunitha V", "Sujatha Aravindhan Menon", "MD. Shahul Hammeed M A"];
-            faculties.forEach(faculty => {
-                const seatCount = localStorage.getItem(`englishseatCount_${faculty}`) || 70;
+    // Load initial seat counts from local storage or set default values
+    const faculties = ["Prasanth Kumar N S", "Sunitha V", "Sujatha Aravindhan Menon", "MD. Shahul Hammeed M A"];
+    faculties.forEach(faculty => {
+                const seatCount = localStorage.getItem(`dsaseatCount_${faculty}`) || 70;
                 document.getElementById(`seatCount${faculty.replace(/ /g, '')}`).textContent = seatCount;
             });
 
-            const regNum = document.getElementById('reg');
-            const regNumber = localStorage.getItem('regNum');
-            regNum.innerHTML = regNumber;
-        });
+    const regNum = document.getElementById('reg');
+    const regNumber = localStorage.getItem('regNum');
+    regNum.innerHTML = regNumber;
+});
 
-        function saveSelection(event) {
-            event.preventDefault();
-            const selectedFaculty = document.querySelector('input[name="seats"]:checked').value;
-            const seatCountLabel = document.getElementById(`seatCount${selectedFaculty.replace(/ /g, '')}`);
-            let seatCount = parseInt(seatCountLabel.textContent);
+function saveSelection(event) {
+    event.preventDefault();
+    const selectedFaculty = document.querySelector('input[name="seats"]:checked').value;
+    const seatCountLabel = document.getElementById(`seatCount${selectedFaculty.replace(/\s+/g, '')}`);
+    let seatCount = parseInt(seatCountLabel.textContent);
 
-            if (seatCount > 0) {
-                seatCount -= 1;
-                seatCountLabel.textContent = seatCount;
-                localStorage.setItem(`englishseatCount_${selectedFaculty}`, seatCount);
-                localStorage.setItem('englishFaculty', selectedFaculty);
+    if (seatCount > 0) {
+        seatCount -= 1;
+        seatCountLabel.textContent = seatCount;
+        localStorage.setItem(`englishseatCount_${selectedFaculty}`, seatCount);
+        localStorage.setItem('englishFaculty', selectedFaculty);
 
-                // Show the modal with the confirmation message
-                const modal = document.getElementById("myModal");
-                const modalMessage = document.getElementById("modalMessage");
-                modalMessage.textContent = `Selected faculty: ${selectedFaculty} has been saved. Remaining seats: ${seatCount}`;
-                modal.style.display = "block";
-            } else {
-                alert(`No seats available for faculty: ${selectedFaculty}`);
-            }
-        }
+        // Show the modal with the confirmation message
+        const modal = document.getElementById("myModal");
+        const modalMessage = document.getElementById("modalMessage");
+        modalMessage.textContent = `Selected faculty: ${selectedFaculty} has been saved. Remaining seats: ${seatCount}`;
+        modal.style.display = "block";
+    } else {
+        alert(`No seats available for faculty: ${selectedFaculty}`);
+    }
+}
 
-        function confirmSelection(){
-            // Close the modal and redirect to page5.html
-            const modal = document.getElementById("myModal");
-            modal.style.display = "none";
-            window.location.href = 'page5.html';
-        }
+function confirmSelection(){
+    // Close the modal and redirect to page5.html
+    const modal = document.getElementById("myModal");
+    modal.style.display = "none";
+    window.location.href = 'page5.html';
+}
 
-        function goBackButton(){
-            window.location.href ="page5.html"
-        }
+function goBackButton(){
+    window.location.href = "page5.html";
+}
+
     </script>
 
 </body>
